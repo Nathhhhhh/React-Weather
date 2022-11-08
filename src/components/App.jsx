@@ -1,21 +1,52 @@
 import React from 'react'
+import { useState } from 'react'
 import TemperatureDisplay from './TemperatureDisplay'
 import WeatherCode from './WeatherCode'
 
 const App = () => {
 
+  const baseUrl = 'https://api.open-meteo.com/v1/forecast';
+  const timezone = 'Europe/London'
+  const dailyVars = ['weathercode', 'temperature_2m_max', 'temperature_2m_min']
+  const hourlyVars = ['temperature_2m', 'weathercode']
+
+  let latitude = '';
+  let longitude = '';
+
+  function success(position) {
+   latitude  = position.coords.latitude;
+   longitude = position.coords.longitude;
+  }
+  navigator.geolocation.getCurrentPosition(success);
+
+  //state
+  const [data, setData] = useState(null);
+  //comportement
+
+  const getData = () => {
+    fetch(`${baseUrl}?latitude=${latitude}&longitude=${longitude}&hourly=${hourlyVars.join(',')}&daily=${dailyVars.join(',')}&timezone=${timezone}`)
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+  }
+
+  //render
   return <main className="weather-container">
     <div className="weather-container-content">
       <header className="weather-container-header">
         <p className="location">La Rochelle</p>
-        <button className="refresh-button">
+        <button className="refresh-button" onClick={getData}>
           <img src="https://lpmiaw-react.napkid.dev/img/weather/refresh.png" alt="Refresh" />
         </button>
       </header>
       <p className="date">10/20/2021</p>
       <article className="today">
-        <WeatherCode code={51}/>
-        <TemperatureDisplay min={18} max={25} avg={22}/>
+        <WeatherCode code={51} />
+        <TemperatureDisplay min={18} max={25} avg={22} />
       </article>
       <section className="hidden">
         <nav className="tabs">
