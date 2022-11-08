@@ -1,4 +1,7 @@
+import PropTypes from 'prop-types'
+
 export default function TemperatureDisplay({ min, max, avg }) {
+
 
     //state
 
@@ -17,4 +20,10 @@ export default function TemperatureDisplay({ min, max, avg }) {
         </div>
     );
 
+}
+
+TemperatureDisplay.propTypes = {
+    min: PropTypes.number.isRequired,
+    max: PropTypes.number.isRequired,
+    avg: PropTypes.number.isRequired
 }

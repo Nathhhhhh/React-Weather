@@ -7,6 +7,7 @@ import slightSnowIcon from '../assets/img/slight-snow.png'
 import sunRainIcon from '../assets/img/sun-rain.png'
 import sunshineIcon from '../assets/img/sunshine.png'
 import thunderstormIcon from '../assets/img/thunderstorm.png'
+import PropTypes from 'prop-types'
 const codes =
     [
         { code: 95, image: thunderstormIcon },
@@ -38,4 +39,8 @@ export default function WeatherCode({code}) {
     return (
         <img src={findImg(code)} alt="sunshine" className="weathercode-img" />
     );
+}
+
+WeatherCode.propTypes = {
+    code: PropTypes.number.isRequired
 }
