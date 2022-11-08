@@ -21,6 +21,7 @@ const App = () => {
 
   //state
   const [data, setData] = useState(null);
+  const [dateNow, setDateNow] = useState(null);
   //comportement
 
   const getData = () => {
@@ -28,6 +29,7 @@ const App = () => {
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
+        setDateNow(new Date(Date.now()).toLocaleTimeString('fr'))
       })
       .catch((err) => {
         console.log(err);
@@ -97,7 +99,7 @@ const App = () => {
         </ul>
       </section>
       <footer className="weather-container-footer">
-        <p>Mis à jour à 10:14:21</p>
+        <p>Mis à jour à {dateNow}</p>
       </footer>
     </div>
   </main>
