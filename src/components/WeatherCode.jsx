@@ -30,7 +30,8 @@ export default function WeatherCode({code}) {
 
     //comportement
     const findImg = (code) => {
-        return codes.find((icon) => code >= icon.code  ).image;
+        if(code)
+            return codes.find((icon) => code >= icon.code  ).image;
     }
 
     //render
