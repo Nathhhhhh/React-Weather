@@ -4,6 +4,7 @@ import { useState } from 'react'
 import TemperatureDisplay from './TemperatureDisplay'
 import WeatherCode from './WeatherCode'
 
+
 const App = () => {
 
   const baseUrl = 'https://api.open-meteo.com/v1/forecast';
@@ -63,7 +64,7 @@ const App = () => {
         {weather !== null
         ? <WeatherCode code={weather.hourly.weathercode[0]} />
         : ''
-      }
+        }
         {weather !== null 
         ? <TemperatureDisplay min={Math.round(weather.daily.temperature_2m_min[0])} max={Math.round(weather.daily.temperature_2m_max[0])} avg={Math.round((weather.daily.temperature_2m_max[0] + weather.daily.temperature_2m_min[0]) / 2)} />
         : 'Pas de données'
