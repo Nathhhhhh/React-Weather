@@ -1,4 +1,5 @@
 import React from 'react'
+import { useEffect } from 'react'
 import { useState } from 'react'
 import TemperatureDisplay from './TemperatureDisplay'
 import WeatherCode from './WeatherCode'
@@ -30,13 +31,23 @@ const App = () => {
       .then((response) => response.json())
       .then((data) => {
         setDateNow(new Date(Date.now()).toLocaleTimeString('fr'))
-        setWeather(data);
-        console.log(weather.hourly)
+        if(data)
+          setWeather(data);
+
       })
       .catch((err) => {
         console.log(err);
       })
   }
+
+  useEffect(() => {
+    getData();
+    const timer = setInterval(getData, 10000)
+    return () => {
+      clearInterval(timer);
+    }
+    
+  },[])
 
   //render
   return <main className="weather-container">
