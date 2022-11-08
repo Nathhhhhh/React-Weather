@@ -10,26 +10,28 @@ const App = () => {
   const dailyVars = ['weathercode', 'temperature_2m_max', 'temperature_2m_min']
   const hourlyVars = ['temperature_2m', 'weathercode']
 
-  let latitude = '';
-  let longitude = '';
+  const latitude = 46.1592
+  const longitude = -1.17
 
-  function success(position) {
-   latitude  = position.coords.latitude;
-   longitude = position.coords.longitude;
-  }
-  navigator.geolocation.getCurrentPosition(success);
+  // function success(position) {
+  //  latitude  = position.coords.latitude;
+  //  longitude = position.coords.longitude;
+  // }
+  // navigator.geolocation.getCurrentPosition(success);
 
   //state
-  const [data, setData] = useState(null);
+  const [weather, setWeather] = useState(null);
   const [dateNow, setDateNow] = useState(null);
+
   //comportement
 
   const getData = () => {
     fetch(`${baseUrl}?latitude=${latitude}&longitude=${longitude}&hourly=${hourlyVars.join(',')}&daily=${dailyVars.join(',')}&timezone=${timezone}`)
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
         setDateNow(new Date(Date.now()).toLocaleTimeString('fr'))
+        setWeather(data);
+        console.log(weather.hourly)
       })
       .catch((err) => {
         console.log(err);
@@ -47,8 +49,14 @@ const App = () => {
       </header>
       <p className="date">10/20/2021</p>
       <article className="today">
-        <WeatherCode code={51} />
-        <TemperatureDisplay min={18} max={25} avg={22} />
+        {weather !== null
+        ? <WeatherCode code={weather.hourly.weathercode[0]} />
+        : ''
+      }
+        {weather !== null 
+        ? <TemperatureDisplay min={Math.round(weather.daily.temperature_2m_min[0])} max={Math.round(weather.daily.temperature_2m_max[0])} avg={Math.round((weather.daily.temperature_2m_max[0] + weather.daily.temperature_2m_min[0]) / 2)} />
+        : 'Pas de données'
+        }
       </article>
       <section className="hidden">
         <nav className="tabs">
