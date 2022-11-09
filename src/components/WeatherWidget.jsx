@@ -27,7 +27,7 @@ export default function WeatherWidget({ city, lat, long }) {
                     <img src="https://lpmiaw-react.napkid.dev/img/weather/refresh.png" alt="Refresh" />
                 </button>
             </header>
-            <p className="date">10/20/2021</p>
+            <p className="date">{weather !== null ? new Date(weather.current_weather.time).toLocaleDateString() : ''}</p>
             <article className="today">
 
                 {weather !== null
