@@ -4,6 +4,7 @@ import WeatherCode from './WeatherCode'
 import { useState } from 'react'
 import { useEffect } from 'react'
 import Proptypes from 'prop-types'
+import { useCallback } from 'react'
 
 
 export default function WeatherWidget({ city, lat, long }) {
@@ -18,7 +19,7 @@ export default function WeatherWidget({ city, lat, long }) {
     const [dateNow, setDateNow] = useState(null);
     const [currentTab, setCurrentTab] = useState('day');
     //comportement
-    const getData = () => {
+    const getData = useCallback(() => {
         fetch(`${baseUrl}?latitude=${lat}&longitude=${long}&hourly=${hourlyVars.join(',')}&daily=${dailyVars.join(',')}&timezone=${timezone}&current_weather=true`)
             .then((response) => response.json())
             .then((data) => {
@@ -29,7 +30,7 @@ export default function WeatherWidget({ city, lat, long }) {
             .catch((err) => {
                 console.log(err);
             })
-    }
+    }, [city])
 
     useEffect(() => {
         getData();
@@ -38,7 +39,7 @@ export default function WeatherWidget({ city, lat, long }) {
             clearInterval(timer);
         }
 
-    }, [])
+    }, [getData])
     //render
     return (
         <div className="weather-container-content">
@@ -87,4 +88,4 @@ export default function WeatherWidget({ city, lat, long }) {
 
 }
 
-WeatherWidget.propTypes = { latitude: Proptypes.number.isRequired, longitude: Proptypes.number.isRequired, cityName: Proptypes.string.isRequired }
+WeatherWidget.propTypes = { lat: Proptypes.number.isRequired, long: Proptypes.number.isRequired, city: Proptypes.string.isRequired }

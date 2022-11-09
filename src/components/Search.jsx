@@ -17,7 +17,6 @@ export default function Search({ onSelect }) {
         fetch(`https://geo.api.gouv.fr/communes?nom=${city}&fields=centre,departement&boost=population&limit=5`)
             .then((response) => response.json())
             .then((data) => {
-                console.log(data)
                 setSearch(
                     data.map((result, i) => {
                         return (
@@ -35,7 +34,8 @@ export default function Search({ onSelect }) {
     const handleChange = (event) => {
         const value = event.target.value;
         setCity(value);
-        getData();
+        if(value.length >= 3)
+            getData();
     }
 
     //render

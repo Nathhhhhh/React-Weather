@@ -24,14 +24,13 @@ const codes =
     ]
 
 
-export default function WeatherCode({code}) {
+export default function WeatherCode({ code }) {
 
     //state
 
     //comportement
     const findImg = (code) => {
-        if(code)
-            return codes.find((icon) => code >= icon.code  ).image;
+        return codes.find((icon) => code >= icon.code).image;
     }
 
     //render
