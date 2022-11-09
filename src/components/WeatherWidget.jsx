@@ -5,41 +5,19 @@ import { useState } from 'react'
 import { useEffect } from 'react'
 import Proptypes from 'prop-types'
 import { useCallback } from 'react'
-
+import useOpenWeather from '../hooks/useOpenWeather'
 
 export default function WeatherWidget({ city, lat, long }) {
 
-    const baseUrl = 'https://api.open-meteo.com/v1/forecast';
     const timezone = 'Europe/Paris'
     const dailyVars = ['weathercode', 'temperature_2m_max', 'temperature_2m_min']
     const hourlyVars = ['temperature_2m', 'weathercode']
 
     //state
-    const [weather, setWeather] = useState(null);
-    const [dateNow, setDateNow] = useState(null);
+    const [weather, dateNow, getData] = useOpenWeather(city, lat, long, timezone, dailyVars, hourlyVars, 60000);
     const [currentTab, setCurrentTab] = useState('day');
     //comportement
-    const getData = useCallback(() => {
-        fetch(`${baseUrl}?latitude=${lat}&longitude=${long}&hourly=${hourlyVars.join(',')}&daily=${dailyVars.join(',')}&timezone=${timezone}&current_weather=true`)
-            .then((response) => response.json())
-            .then((data) => {
-                setDateNow(new Date(Date.now()).toLocaleTimeString('fr'))
-                if (data)
-                    setWeather(data);
-            })
-            .catch((err) => {
-                console.log(err);
-            })
-    }, [city])
 
-    useEffect(() => {
-        getData();
-        const timer = setInterval(getData, 10000)
-        return () => {
-            clearInterval(timer);
-        }
-
-    }, [getData])
     //render
     return (
         <div className="weather-container-content">
